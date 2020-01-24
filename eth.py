@@ -12,7 +12,7 @@ count=0
 
 
 print("ETH EXCHANGE RATES")
-print("Please wait I am scrapping")
+print("Please wait I am scrapping from two websites shapeshift and flyp")
 for pair in ETH:
     url=u+pair
     page=requests.get(url)
@@ -26,7 +26,41 @@ for pair in ETH:
     inv=requests.get(u+ETH2[count]).text
     inve=inv.split(',')
     inver=inve[1]
-    inverse_rate='1'+p[0]+'='+inver[7:-2]+'ETH'
+    inverse_rate='1'+p[1]+'='+inver[7:-2]+p[0]
     df.loc[count]=(p[1],exchange_rate,inverse_rate)
     count=count+1
+print("THIS IS FROM SHAPESHIFT ")
 print(df)
+
+df2 = pd.DataFrame(columns=['pair', 'Exchange-Rate','Inverse-Rate'])
+
+flyp='https://flyp.me/api/v1/data/exchange_rates'
+page2=requests.get(flyp)
+data=page2.text
+all=data.split(',')
+eth_pair=[]
+ETH_exchange_rate=[]
+ETH_inverse_rate=[]
+for element in all:
+    if 'ETH' in element:
+        eth_pair.append(element)
+for pair in eth_pair:
+    p=str(pair)
+    if 'ETH-' in p:
+        ETH_exchange_rate.append(p[1:-1])
+    else:
+        ETH_inverse_rate.append(p[1:-1])
+
+for i in range(len(ETH_exchange_rate)):
+    exchange_rate=str(ETH_exchange_rate[i])
+    inverse_rate=str(ETH_inverse_rate[i])
+    pair=exchange_rate.split(':')
+    p2=str(pair[0])
+    df2.loc[i]=(p2[0:-1],exchange_rate,inverse_rate)
+print("THIS IS FROM FLYP")
+print(df2)
+
+
+
+
+
