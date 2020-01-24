@@ -36,7 +36,7 @@ for token in range(2,200):
         i=token-2
         df.loc[i]={token_name,exchange_rate,current_pool_size}
     except nosuchelementexception:
-       pass
+       continue
 print(df)
     
 
